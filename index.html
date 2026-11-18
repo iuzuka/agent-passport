@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Agent Passport — a free, non-transferable passport NFT for Agent ID holders. Check in daily, build your streak, collect milestone badges." />
+  <title>Agent Passport</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- ethers.js v6 (UMD) via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.2/dist/ethers.umd.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">✦</span>
+      <span class="brand-name">Agent Passport</span>
+    </div>
+    <button id="connectBtn" class="btn btn-primary">Connect Wallet</button>
+  </header>
+
+  <main class="container">
+    <!-- Deployment notice: shown while the contract is not live yet -->
+    <div id="deployNotice" class="notice hidden" role="status"></div>
+
+    <section class="hero">
+      <h1>Agent Passport</h1>
+      <p class="lede">
+        A free, non-transferable passport for Agent ID holders.
+        Mint yours, check in once a day to build your streak,
+        and collect soulbound badges at 3, 7, 14 and 21 days.
+      </p>
+      <p class="fineprint">
+        Minting is free — you only pay network gas. No value, return or
+        reward is promised. Your wallet signs every transaction itself;
+        this site never signs anything for you and never asks for a seed
+        phrase or private key.
+      </p>
+    </section>
+
+    <!-- Wallet / eligibility -->
+    <section class="card" id="walletCard">
+      <h2>Your Passport</h2>
+      <div id="notConnected">
+        <p>Connect your wallet to check eligibility and manage your Passport.</p>
+        <button id="connectBtn2" class="btn btn-primary">Connect Wallet</button>
+      </div>
+      <div id="connected" class="hidden">
+        <dl class="kv">
+          <div><dt>Wallet</dt><dd id="walletAddr">—</dd></div>
+          <div><dt>Network</dt><dd id="networkName">—</dd></div>
+          <div><dt>Agent ID held</dt><dd id="agentIdStatus">—</dd></div>
+          <div><dt>Passport</dt><dd id="passportStatus">—</dd></div>
+        </dl>
+        <p id="chainWarning" class="warning hidden">
+          You are not on Chain ID 56. Switch network to continue.
+          <button id="switchChainBtn" class="btn btn-small">Switch Network</button>
+        </p>
+        <div class="actions">
+          <button id="mintBtn" class="btn btn-primary" disabled>Mint Passport (free)</button>
+          <button id="checkInBtn" class="btn btn-accent" disabled>Check In Today</button>
+        </div>
+        <p id="actionHint" class="hint"></p>
+      </div>
+    </section>
+
+    <!-- Streak -->
+    <section class="card" id="streakCard">
+      <h2>Daily Streak</h2>
+      <div class="stats-grid">
+        <div class="stat"><span class="stat-value" id="streakCurrent">—</span><span class="stat-label">Current streak (days)</span></div>
+        <div class="stat"><span class="stat-value" id="streakBest">—</span><span class="stat-label">Best streak (days)</span></div>
+        <div class="stat"><span class="stat-value" id="streakTotal">—</span><span class="stat-label">Total check-ins</span></div>
+        <div class="stat"><span class="stat-value" id="lastCheckIn">—</span><span class="stat-label">Last check-in</span></div>
+      </div>
+      <p id="nextCheckIn" class="hint"></p>
+    </section>
+
+    <!-- Badges -->
+    <section class="card" id="badgeCard">
+      <h2>Milestone Badges</h2>
+      <p class="hint">Soulbound badges, claimable once your streak reaches the milestone. One badge per milestone.</p>
+      <div class="badges" id="badges"></div>
+    </section>
+
+    <!-- Public stats -->
+    <section class="card" id="publicCard">
+      <h2>Public Stats</h2>
+      <div class="stats-grid">
+        <div class="stat"><span class="stat-value" id="totalMinted">—</span><span class="stat-label">Passports minted</span></div>
+        <div class="stat"><span class="stat-value" id="totalCheckIns">—</span><span class="stat-label">Total check-ins</span></div>
+      </div>
+    </section>
+
+    <!-- Transaction status -->
+    <section class="card hidden" id="txCard">
+      <h2>Transaction</h2>
+      <p id="txStatus" class="tx-status">—</p>
+      <p id="txLinkWrap" class="hidden">View on explorer: <a id="txLink" href="#" target="_blank" rel="noopener">—</a></p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Agent Passport — free mint, gas only. No airdrop, no return, no value promised.</p>
+    <p class="fineprint">Contract: <code id="contractAddr">—</code> · Chain ID 56 · Source &amp; setup: see README.</p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
